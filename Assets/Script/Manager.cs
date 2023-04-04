@@ -32,6 +32,7 @@ public class Manager : MonoBehaviour
         {
             Debug.Log(i);
         }
+        
        KeyValuePair<string, int> firstElement  = dict.First();
         string key = firstElement.Key;
         int value = firstElement.Value;

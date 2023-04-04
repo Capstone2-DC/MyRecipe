@@ -14,6 +14,7 @@ public class RecipeDB
     {
         recipeList = LoadRecipe("Recipe");
     }
+    
     public static Dictionary<string, int> Find(List<string> haveIngredient)
     {
         Dictionary<string, int> dict = new Dictionary<string, int>();

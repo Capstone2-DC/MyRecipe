@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    public static string ingredients;
     public void ButtonController()
     {
         
@@ -13,5 +14,7 @@ public class UIManager : MonoBehaviour
     {
         Manager.list.Add(ingredient);
         UpdateUI.Instance.UpdateText(ingredient);
+        ingredients += ingredient + " ";
+
     }
 }
