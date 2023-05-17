@@ -3,7 +3,7 @@
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
 [Ll]ibrary/
-MyRecipe/[Tt]emp/
+[Tt]emp/
 MyRecipe/[Oo]bj/
 MyRecipe/[Bb]uild/
 MyRecipe/[Bb]uilds/
