@@ -7,7 +7,7 @@
 MyRecipe/[Oo]bj/
 MyRecipe/[Bb]uild/
 MyRecipe/[Bb]uilds/
-MyRecipe/[Ll]ogs/
+[Ll]ogs/
 MyRecipe/[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
