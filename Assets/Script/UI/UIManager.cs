@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class UIManager : MonoBehaviour
 {
-    public static string ingredients;
+    public static string Ingredients;
+    public static string Categories;
 
     [SerializeField] GameObject IngredientScroll;
 
@@ -13,6 +16,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject caution;
 
     private string tempIngredient;
+    
+
+    public Image[] backgroundImages; // 백그라운드 이미지
+
+    private Color activeColor = Color.green; // 활성화된 버튼의 색깔
+    private Color inactiveColor = Color.white; // 비활성화된 버튼의 색깔
 
     public void IngredientBtn(string ingredient)
     {
@@ -30,12 +39,27 @@ public class UIManager : MonoBehaviour
                 IngredientScroll.SetActive(true);
                 break;
             case "총0개의재료추가하기":
-                ingredients = tempIngredient;
-                UpdateUI.Instance.UpdateText(ingredients);
+                Ingredients = tempIngredient;
+                UpdateUI.Instance.UpdateText(Ingredients);
                 IngredientScroll.SetActive(false);
                 break;  
         }
     }
+    public void CategoryBtn(string btn)
+    {
+        Categories = btn;
+    }
+
+    public void CategoryBtnColor(int btnIndex)
+    {
+        foreach (Image backgroundImage in backgroundImages)
+        {
+            backgroundImage.color = inactiveColor;
+        }
+        // 선택한 버튼에 해당하는 백그라운드 이미지의 색상을 활성화 색깔로 변경
+        backgroundImages[btnIndex].color = activeColor;
+    }
+
 
     public void ChatGptContents(string btn)
     {
