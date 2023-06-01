@@ -9,9 +9,14 @@ import sys
 
 #유니티에서 레시피이름을 첫번째 인자로 받음
 recipe_name = sys.argv[1]
+#str = sys.argv[2]
+#recipe_name = "간장파스타감자"
+str = "C:/Users/zhun0/AppData/LocalLow/DefaultCompany/MyRecipe/recipe_image.jpg"
+
 #recipe_name = "간장 파스타 감자"
 
-def search_google_images(query):
+def search_google_images(query, str):
+    print(str)
     chrome_options = webdriver.ChromeOptions()
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
@@ -27,11 +32,9 @@ def search_google_images(query):
     #하나의 단일 이미지 검색을 위해 element 여러 장은 elements사용
     url = driver.find_element(By.CSS_SELECTOR, '#islrg > div.islrc > div:nth-child(2) > a.wXeWr.islib.nfEiy > div.bRMDJf.islir > img').get_attribute('src')
 
-
-
-    urllib.request.urlretrieve(url, 'C:/Users/zhun0/AppData/LocalLow/DefaultCompany/MyRecipe/recipe_image.jpg')
+    urllib.request.urlretrieve(url, str)
     #print(url)
     #src = .... (이미지 속성값) 을 가져올 수 있음
 
 # 구글 이미지 검색하여 이미지 다운로드
-search_google_images(recipe_name)
+search_google_images(recipe_name, str)

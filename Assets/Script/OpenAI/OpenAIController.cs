@@ -7,10 +7,12 @@ using OpenAI_API;
 using OpenAI_API.Chat;
 using System;
 using OpenAI_API.Models;
+using System.Diagnostics;
+using System.IO;
 
 public class OpenAIController : MonoBehaviour
 {
-    public GetImageURL GetImage;
+    //public GetImageURL GetImage;
 
     public TMP_Text textField;
     public TMP_InputField inputField;
@@ -28,7 +30,7 @@ public class OpenAIController : MonoBehaviour
     private List<ChatMessage> messages;
     void Start()
     {
-        api = new OpenAIAPI("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");
+        api = new OpenAIAPI("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");
         StartConversation();
         //OkBtn.onClick.AddListener(() => GetResponse(OkBtn, UIManager.Ingredients + "으로 만들 수 있는 아이에게 해 줄 건강식 레시피 추천해줘"));
         OkBtn.onClick.AddListener(() =>
@@ -37,7 +39,7 @@ public class OpenAIController : MonoBehaviour
             if (string.IsNullOrEmpty(ingredients))
             {
                 // 두 번째 매개변수가 비어있는 경우 경고문구 출력
-                Debug.LogWarning("무슨 재료를 가지고 계신가요? 알려주시면 그에 맞는 건강한 레시피를 추천해드릴게요.");
+                UnityEngine.Debug.LogWarning("무슨 재료를 가지고 계신가요? 알려주시면 그에 맞는 건강한 레시피를 추천해드릴게요.");
             }
             else
             {
@@ -61,20 +63,10 @@ public class OpenAIController : MonoBehaviour
         inputField.text = "";
         string startString = "안녕하세요, 레시피를 추천해드리겠습니다";
         textField.text = startString;
-        Debug.Log(startString);
+        UnityEngine.Debug.Log(startString);
     }
     public async void GetResponse(Button button, string question)
     {
-        if(question == null)
-        {
-            //Log가 아닌 아래문구를 포함한 경고창 띄워주는 작업 필요
-            Debug.Log("무슨 재료를 가지고 계신가요? 알려주시면 그에 맞는 건강한 레시피를 추천해드릴게요.");
-            return;
-        }
-        /* if (inputField.text.Length < 1)
-         {
-             return;
-         }*/
         button.enabled = false;
 
         //유저 메세지에 inputField를
@@ -90,7 +82,7 @@ public class OpenAIController : MonoBehaviour
         {
             userMessage.Content = userMessage.Content.Substring(0, 100);
         }
-        Debug.Log(string.Format("{0} : {1}", userMessage.Role, userMessage.Content));
+        UnityEngine.Debug.Log(string.Format("{0} : {1}", userMessage.Role, userMessage.Content));
 
         //list에 메세지 추가
         messages.Add(userMessage);
@@ -119,16 +111,18 @@ public class OpenAIController : MonoBehaviour
         //GetImageURL.Insatnce.CrawlingImage(recipeName);
 
         Recipe.SetActive(true);
-        
-         
-        Debug.Log(string.Format("{0}: {1}", responseMessage.rawRole, responseMessage.Content));
+
+
+        UnityEngine.Debug.Log(string.Format("{0}: {1}", responseMessage.rawRole, responseMessage.Content));
 
         //응답을 message리스트에 추가
         messages.Add(responseMessage);
 
         button.enabled = true;
+        CrawlingImage(recipeName);
+        UnityEngine.Debug.Log(recipeName);
+        UnityEngine.Debug.Log(recipeName.GetType());
 
-        GetImage.CrawlingImage(recipeName);
     }
 
     public void UpdateText(ChatMessage responseMessage)
@@ -139,18 +133,67 @@ public class OpenAIController : MonoBehaviour
         string recipe = splitText[2];
         string ingredients = splitText[3];
         string caution = splitText[4];
-        Debug.Log("recipeName:" +recipeName);
-        Debug.Log("recipe:" +recipe);
-        Debug.Log("ingredients:"+ingredients);
-        Debug.Log("caution:" +caution);
+        UnityEngine.Debug.Log("recipeName:" +recipeName);
+        UnityEngine.Debug.Log("recipe:" +recipe);
+        UnityEngine.Debug.Log("ingredients:"+ingredients);
+        UnityEngine.Debug.Log("caution:" +caution);
 
         recipeNameField.text = recipeName;
         recipeField.text = string.Format("조리 순서: \n{0}", recipe);
         ingredientsNeededField.text = string.Format("필요한 재료: \n\n{0}", ingredients);
         cautionField.text = string.Format("아이가 먹을 때 주의할 점: \n\n{0}", caution);
-
-       
+ 
     }
 
-   public static string recipeName { get; set; }
+
+    public RawImage targetRawImage;
+    public void CrawlingImage(string recipe)
+    {
+
+        string pythonScriptPath = Application.dataPath + "/Script/URLwithPython/Python/RecipeSearch.py";
+        string recipeName = recipe;
+
+        // Python 스크립트 실행
+        ProcessStartInfo startInfo = new ProcessStartInfo();
+        startInfo.FileName = "python";
+        //UnityEngine.Debug.Log("경로" + Path.Combine(Application.persistentDataPath, "recipe_image.jpg"));
+        UnityEngine.Debug.Log("경로" + Application.persistentDataPath + "/" + "recipe_image.jpg");
+        startInfo.Arguments = $"{pythonScriptPath} \"{recipeName}\" \"{Path.Combine(Application.persistentDataPath, "recipe_image.jpg")}\"";
+        //startInfo.Arguments = $"{pythonScriptPath} \"{recipeName}\" \"{Application.persistentDataPath + "/" + "recipe_image.jpg"}\"";
+        startInfo.UseShellExecute = false;
+        startInfo.RedirectStandardOutput = true;
+
+        Process process = new Process();
+        process.StartInfo = startInfo;
+        process.Start();
+
+        // Python 스크립트의 출력 읽기
+        string output = process.StandardOutput.ReadToEnd();
+        process.WaitForExit();
+
+        // 이미지 파일 로드
+        string imagePath = Path.Combine(Application.persistentDataPath, "recipe_image.jpg");
+        //string imagePath = Application.persistentDataPath +"/"+ "recipe_image.jpg";
+        UnityEngine.Debug.Log(imagePath);
+        UnityEngine.Debug.Log(File.Exists(imagePath));
+        if (File.Exists(imagePath))
+        {
+            byte[] imageBytes = File.ReadAllBytes(imagePath);
+
+            // Unity에서 이미지 표시
+            Texture2D texture = new Texture2D(1, 1);
+            texture.LoadImage(imageBytes);
+
+            // Assign the texture to the targetRawImage
+            targetRawImage.texture = texture;
+
+            // 이미지 파일 삭제
+           // File.Delete(imagePath);
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("이미지 파일을 찾을 수 없습니다.");
+        }
+    }
+    public static string recipeName { get; set; }
 }
