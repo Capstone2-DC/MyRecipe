@@ -30,7 +30,7 @@ public class OpenAIController : MonoBehaviour
     private List<ChatMessage> messages;
     void Start()
     {
-        api = new OpenAIAPI("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");
+        api = new OpenAIAPI("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");
         StartConversation();
         //OkBtn.onClick.AddListener(() => GetResponse(OkBtn, UIManager.Ingredients + "으로 만들 수 있는 아이에게 해 줄 건강식 레시피 추천해줘"));
         OkBtn.onClick.AddListener(() =>

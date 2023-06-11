@@ -18,10 +18,10 @@ public class UIManager : MonoBehaviour
 
     private string ingredients;
 
-    public Image[] backgroundImages; // 백그라운드 이미지
+    public GameObject[] backgroundImages; // 백그라운드 이미지
 
-    private Color activeColor = Color.green; // 활성화된 버튼의 색깔
-    private Color inactiveColor = Color.white; // 비활성화된 버튼의 색깔
+  /*  private Color activeColor = Color.green; // 활성화된 버튼의 색깔
+    private Color inactiveColor = Color.white; // 비활성화된 버튼의 색깔*/
 
     public void IngredientBtn(string ingredient)
     {
@@ -54,12 +54,14 @@ public class UIManager : MonoBehaviour
 
     public void CategoryBtnColor(int btnIndex)
     {
-        foreach (Image backgroundImage in backgroundImages)
+        foreach (GameObject backgroundImage in backgroundImages)
         {
-            backgroundImage.color = inactiveColor;
+            //backgroundImage.color = inactiveColor;
+            backgroundImage.SetActive(false);
         }
         // 선택한 버튼에 해당하는 백그라운드 이미지의 색상을 활성화 색깔로 변경
-        backgroundImages[btnIndex].color = activeColor;
+        //backgroundImages[btnIndex].color = activeColor;
+        backgroundImages[btnIndex].SetActive(true);
     }
 
     public void ChatGptContents(string btn)
