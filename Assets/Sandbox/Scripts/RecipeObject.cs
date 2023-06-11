@@ -91,6 +91,7 @@ public class RecipeObject : MonoBehaviour
         {
             
             var item = Instantiate(this.gameObject);
+            favor.GetComponent<UIBtnManager>().DelObj(this.transform);
             record.GetComponent<UIBtnManager>().LimitAddObjects(item.transform);
             item.transform.parent = record.Find("RecipeScrollView").Find("Viewport").Find("Content");
             Destroy(this.gameObject);
