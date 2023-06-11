@@ -42,8 +42,29 @@ public class UIBtnManager : MonoBehaviour
 
     }
 
-    public void RecipeObjReset()
+
+    public void LimitAddObjects(Transform item)
     {
-        
+        // RecordPanel에 사용되는 최근기록을 위한 함수, List에 5개의 레시피가 저장되있을경우 오래된 객체부터 삭제
+        recipeObj.Add(item);
+        if (recipeObj.Count > 5)
+        {
+            Destroy(recipeObj[0].gameObject);
+            recipeObj.RemoveAt(0);
+        }
+            
     }
+    
+    public void DelObj(Transform item)
+    {
+        for(int i =0; i < recipeObj.Count; i++)
+        {
+            if(recipeObj[i] == item)
+            {
+                Destroy(recipeObj[i].gameObject);
+                recipeObj.RemoveAt(i);
+            }
+        }
+    }
+    
 }

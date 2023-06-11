@@ -8,12 +8,16 @@ public class RecipeObject : MonoBehaviour
 {
     // 버튼 속성
     public Sprite image = null;
+    private string imageAreaName = "ImageBox";
+
     public string name = "test";
+    private string nameAreaName = "RecipeTxt";
     
     public bool isFavorite = false;
 
     private string recordPanelName = "RecordPanel";
     private string favoritePanelName = "FavoritePanel";
+
 
     [SerializeField]
     private Transform record = null;
@@ -27,16 +31,19 @@ public class RecipeObject : MonoBehaviour
         favor = GameObject.Find("Canvas").transform.Find(favoritePanelName);
 
         ImageBtnReset();
-        RecipeNameReset(name);
+        RecipeObjRefresh();
 
         print(favor.Find("RecipeScrollView").Find("Viewport").Find("Content"));
     }
 
-    public void RecipeNameReset(string name)
+    
+    public void RecipeObjRefresh()
     {
-        this.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = name;
-    }
+        if (image != null) this.transform.Find(imageAreaName).GetComponent<Image>().sprite = image;
 
+        this.transform.Find(nameAreaName).GetComponent<TextMeshProUGUI>().text = name;
+
+    }
 
 
     public void FavoriteBtn()
@@ -61,10 +68,11 @@ public class RecipeObject : MonoBehaviour
             this.transform.GetChild(2).GetChild(1).gameObject.SetActive(false);
         }
     }
+   
     
-    public void FavoriteBoxPopUp()
+    public void PopUpEvent()
     {
-
+        // 레시피 오브젝트 눌렀을 시 작동되는 함수
     }
 
 
@@ -74,6 +82,8 @@ public class RecipeObject : MonoBehaviour
         {
            
             var item = Instantiate(this.gameObject);
+            record.GetComponent<UIBtnManager>().DelObj(this.transform);
+            favor.GetComponent<UIBtnManager>().recipeObj.Add(item.transform);
             item.transform.parent = favor.Find("RecipeScrollView").Find("Viewport").Find("Content");
             Destroy(this.gameObject);
         }
@@ -81,6 +91,7 @@ public class RecipeObject : MonoBehaviour
         {
             
             var item = Instantiate(this.gameObject);
+            record.GetComponent<UIBtnManager>().LimitAddObjects(item.transform);
             item.transform.parent = record.Find("RecipeScrollView").Find("Viewport").Find("Content");
             Destroy(this.gameObject);
         }
