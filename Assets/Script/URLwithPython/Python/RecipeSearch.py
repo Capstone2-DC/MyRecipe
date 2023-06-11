@@ -8,7 +8,7 @@ import urllib.request
 import sys
 
 #유니티에서 레시피이름을 첫번째 인자로 받음
-recipe_name = sys.argv[1]
+recipe_name = sys.argv[0]
 #str = sys.argv[2]
 #recipe_name = "간장파스타감자"
 str = "C:/Users/zhun0/AppData/LocalLow/DefaultCompany/MyRecipe/recipe_image.jpg"

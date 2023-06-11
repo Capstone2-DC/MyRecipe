@@ -36,7 +36,7 @@ public class Manager : MonoBehaviour
        KeyValuePair<string, int> firstElement  = dict.First();
         string key = firstElement.Key;
         int value = firstElement.Value;
-        UpdateUI.Instance.UpdateRecipe(key);
+        //UpdateUI.Instance.UpdateRecipe(key);
         Debug.Log(key);
     }
 }
