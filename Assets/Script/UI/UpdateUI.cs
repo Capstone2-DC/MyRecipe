@@ -5,7 +5,7 @@ using TMPro;
 
 public class UpdateUI : MonoBehaviour
 {
-    public static UpdateUI Instance { get; private set; }
+    /*public static UpdateUI Instance { get; private set; }
 
     private void Awake()
     {
@@ -22,5 +22,5 @@ public class UpdateUI : MonoBehaviour
     public void UpdateRecipe(string text)
     {
         recipe.text = text;
-    }
+    }*/
 }

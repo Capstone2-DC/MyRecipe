@@ -30,20 +30,24 @@ public class OpenAIController : MonoBehaviour
     private List<ChatMessage> messages;
     void Start()
     {
-        api = new OpenAIAPI("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");
+        api = new OpenAIAPI("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");
         StartConversation();
         //OkBtn.onClick.AddListener(() => GetResponse(OkBtn, UIManager.Ingredients + "으로 만들 수 있는 아이에게 해 줄 건강식 레시피 추천해줘"));
         OkBtn.onClick.AddListener(() =>
         {
-            string ingredients = UIManager.Ingredients;
-            if (string.IsNullOrEmpty(ingredients))
+            string questionIngredients = null;
+            foreach (var ingredi in UIManager.ingredientsList)
+            {
+                questionIngredients += ingredi;
+            }
+            if (string.IsNullOrEmpty(questionIngredients))
             {
                 // 두 번째 매개변수가 비어있는 경우 경고문구 출력
                 UnityEngine.Debug.LogWarning("무슨 재료를 가지고 계신가요? 알려주시면 그에 맞는 건강한 레시피를 추천해드릴게요.");
             }
             else
             {
-                GetResponse(OkBtn, ingredients + "으로 만들 수 있는 아이에게 해 줄 " + UIManager.Categories + "레시피를 추천해줘");
+                GetResponse(OkBtn, questionIngredients + "으로 만들 수 있는 아이에게 해 줄 " + UIManager.Categories + "레시피를 추천해줘");
             }
         });
     }
@@ -59,7 +63,7 @@ public class OpenAIController : MonoBehaviour
         {
             new ChatMessage(ChatMessageRole.System, "너는 가지고 있는 재료를 입력하면 아이에게 해 줄 영양식을 추천해주는 시스템이야. 레시피 이름: 조리 순서: 필요한 재료: 아이가 먹을 때 주의할 점: 소요시간: 의 형식을 꼭 맞춰서 대답해.")//You are an artificial intelligence that recommends nutritious meals for your child when you input the ingredients you have. Divide the recipe name, recipe, and required ingredients into descriptions.
         };
-    
+
         inputField.text = "";
         string startString = "안녕하세요, 레시피를 추천해드리겠습니다";
         textField.text = startString;
@@ -70,7 +74,7 @@ public class OpenAIController : MonoBehaviour
         button.enabled = false;
 
         //유저 메세지에 inputField를
-        ChatMessage userMessage = new ChatMessage(); 
+        ChatMessage userMessage = new ChatMessage();
         userMessage.Role = ChatMessageRole.User; //이 userMessage는 role이 User.
         //userMessage.Content = inputField.text;
 
@@ -133,16 +137,16 @@ public class OpenAIController : MonoBehaviour
         string recipe = splitText[2];
         string ingredients = splitText[3];
         string caution = splitText[4];
-        UnityEngine.Debug.Log("recipeName:" +recipeName);
-        UnityEngine.Debug.Log("recipe:" +recipe);
-        UnityEngine.Debug.Log("ingredients:"+ingredients);
-        UnityEngine.Debug.Log("caution:" +caution);
+        UnityEngine.Debug.Log("recipeName:" + recipeName);
+        UnityEngine.Debug.Log("recipe:" + recipe);
+        UnityEngine.Debug.Log("ingredients:" + ingredients);
+        UnityEngine.Debug.Log("caution:" + caution);
 
         recipeNameField.text = recipeName;
         recipeField.text = string.Format("조리 순서: \n{0}", recipe);
         ingredientsNeededField.text = string.Format("필요한 재료: \n\n{0}", ingredients);
         cautionField.text = string.Format("아이가 먹을 때 주의할 점: \n\n{0}", caution);
- 
+
     }
 
 
@@ -188,7 +192,7 @@ public class OpenAIController : MonoBehaviour
             targetRawImage.texture = texture;
 
             // 이미지 파일 삭제
-           // File.Delete(imagePath);
+            // File.Delete(imagePath);
         }
         else
         {

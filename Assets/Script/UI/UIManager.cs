@@ -1,22 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 public class UIManager : MonoBehaviour
 {
-    public static string Ingredients;
+    public static List<string> ingredientsList = new List<string>();
     public static string Categories;
 
     [SerializeField] GameObject IngredientScroll;
-
     [SerializeField] GameObject recipe;
     [SerializeField] GameObject ingredientNeeded;
     [SerializeField] GameObject caution;
 
-    private string tempIngredient;
-    
+    private string ingredients;
 
     public Image[] backgroundImages; // 백그라운드 이미지
 
@@ -25,12 +25,11 @@ public class UIManager : MonoBehaviour
 
     public void IngredientBtn(string ingredient)
     {
-        /*  Manager.list.Add(ingredient);
-          UpdateUI.Instance.UpdateText(ingredient);*/
-        tempIngredient += ingredient + " ";
-        //활성화된 재료를 다시 선택할 경우 tempIngredient에서 다시선택된 ingredient 뺴야함. 그럼 string형식이아니라 list로 해야할수도
-    }
+        //재료 겹칠경우 리스트에 포함되지 않게 필터링
+        if (ingredientsList.Contains(ingredient + " ")) return;
 
+        ingredientsList.Add(ingredient + " ");
+    }
     public void ButtonController(string btn)
     {
         switch (btn)
@@ -39,10 +38,13 @@ public class UIManager : MonoBehaviour
                 IngredientScroll.SetActive(true);
                 break;
             case "총0개의재료추가하기":
-                Ingredients = tempIngredient;
-                UpdateUI.Instance.UpdateText(Ingredients);
+                foreach (string ingredi in ingredientsList)
+                {
+                    ingredients += ingredi;
+                }
+                //UpdateUI.Instance.UpdateText(ingredients);
                 IngredientScroll.SetActive(false);
-                break;  
+                break;
         }
     }
     public void CategoryBtn(string btn)
@@ -59,7 +61,6 @@ public class UIManager : MonoBehaviour
         // 선택한 버튼에 해당하는 백그라운드 이미지의 색상을 활성화 색깔로 변경
         backgroundImages[btnIndex].color = activeColor;
     }
-
 
     public void ChatGptContents(string btn)
     {
