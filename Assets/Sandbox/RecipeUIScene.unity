@@ -2716,7 +2716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4345087570015778090, guid: c709275a48a8c91448b3258bdea37868, type: 3}
       propertyPath: m_Name
-      value: ItemButton (7)
+      value: ItemButton 7
       objectReference: {fileID: 0}
     - target: {fileID: 4345087570015778092, guid: c709275a48a8c91448b3258bdea37868, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
