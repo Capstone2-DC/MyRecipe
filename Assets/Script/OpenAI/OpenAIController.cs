@@ -24,6 +24,7 @@ public class OpenAIController : MonoBehaviour
     public TMP_Text recipeField;
     public TMP_Text ingredientsNeededField;
     public TMP_Text cautionField;
+    public TMP_Text timeField;
 
 
     private OpenAIAPI api;
@@ -132,20 +133,23 @@ public class OpenAIController : MonoBehaviour
     public void UpdateText(ChatMessage responseMessage)
     {
         //string형식으로 사용하려면 responMessage.ToString()이 아니라, responMessage.Content를 사용하면 된다
-        string[] splitText = responseMessage.Content.Split(new string[] { "레시피 이름:", "조리 순서:", "필요한 재료:", "아이가 먹을 때 주의할 점:" }, StringSplitOptions.None);
+        string[] splitText = responseMessage.Content.Split(new string[] { "레시피 이름:", "조리 순서:", "필요한 재료:", "아이가 먹을 때 주의할 점:", "소요시간:" }, StringSplitOptions.None);
         recipeName = splitText[1]; //static
         string recipe = splitText[2];
         string ingredients = splitText[3];
         string caution = splitText[4];
+        string time = splitText[5];
         UnityEngine.Debug.Log("recipeName:" + recipeName);
         UnityEngine.Debug.Log("recipe:" + recipe);
         UnityEngine.Debug.Log("ingredients:" + ingredients);
         UnityEngine.Debug.Log("caution:" + caution);
+        UnityEngine.Debug.Log("time:" + time);
 
         recipeNameField.text = recipeName;
         recipeField.text = string.Format("조리 순서: \n{0}", recipe);
         ingredientsNeededField.text = string.Format("필요한 재료: \n\n{0}", ingredients);
         cautionField.text = string.Format("아이가 먹을 때 주의할 점: \n\n{0}", caution);
+        timeField.text = string.Format("소요 시간: ", time);
 
     }
 
