@@ -24,14 +24,13 @@ public class OpenAIController : MonoBehaviour
     public TMP_Text recipeField;
     public TMP_Text ingredientsNeededField;
     public TMP_Text cautionField;
-    public TMP_Text timeField;
 
 
     private OpenAIAPI api;
     private List<ChatMessage> messages;
     void Start()
     {
-        api = new OpenAIAPI("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");
+        api = new OpenAIAPI("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");
         StartConversation();
         //OkBtn.onClick.AddListener(() => GetResponse(OkBtn, UIManager.Ingredients + "으로 만들 수 있는 아이에게 해 줄 건강식 레시피 추천해줘"));
         OkBtn.onClick.AddListener(() =>
@@ -102,8 +101,8 @@ public class OpenAIController : MonoBehaviour
         var chatResult = await api.Chat.CreateChatCompletionAsync(new ChatRequest()
         {
             Model = Model.ChatGPTTurbo,
-            Temperature = 0.9,
-            MaxTokens = 400,
+            Temperature = 0,
+            MaxTokens = 800,
             Messages = messages
         });
 
@@ -138,18 +137,15 @@ public class OpenAIController : MonoBehaviour
         string recipe = splitText[2];
         string ingredients = splitText[3];
         string caution = splitText[4];
-        string time = splitText[5];
         UnityEngine.Debug.Log("recipeName:" + recipeName);
         UnityEngine.Debug.Log("recipe:" + recipe);
         UnityEngine.Debug.Log("ingredients:" + ingredients);
         UnityEngine.Debug.Log("caution:" + caution);
-        UnityEngine.Debug.Log("time:" + time);
 
         recipeNameField.text = recipeName;
-        recipeField.text = string.Format("조리 순서: \n{0}", recipe);
-        ingredientsNeededField.text = string.Format("필요한 재료: \n\n{0}", ingredients);
-        cautionField.text = string.Format("아이가 먹을 때 주의할 점: \n\n{0}", caution);
-        timeField.text = string.Format("소요 시간: ", time);
+        recipeField.text = string.Format("조리 순서 \n{0}", recipe);
+        ingredientsNeededField.text = string.Format("필요한 재료 \n{0}", ingredients);
+        cautionField.text = string.Format("아이가 먹을 때 주의할 점 \n\n{0}", caution);
 
     }
 
