@@ -4,13 +4,14 @@ using System.Net.NetworkInformation;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     public static List<string> ingredientsList = new List<string>();
     public static string Categories;
-
+    public Transform itemBtnPrefab = null;
+    
     [SerializeField] GameObject IngredientScroll;
     [SerializeField] GameObject recipe;
     [SerializeField] GameObject ingredientNeeded;
@@ -32,6 +33,7 @@ public class UIManager : MonoBehaviour
     }
     public void ButtonController(string btn)
     {
+        Transform addPanel = GameObject.Find("Canvas").transform.Find("MainPanel").Find("IngredientsLine").Find("po").Find("CategoryScrollView").Find("Viewport").Find("Content").transform;
         switch (btn)
         {
             case "재료추가":
@@ -41,6 +43,10 @@ public class UIManager : MonoBehaviour
                 foreach (string ingredi in ingredientsList)
                 {
                     ingredients += ingredi;
+                    Transform item = Instantiate(itemBtnPrefab);
+                    item.GetChild(0).GetComponent<TextMeshProUGUI>().text = ingredi;
+                    item.parent = addPanel;
+
                 }
                 //UpdateUI.Instance.UpdateText(ingredients);
                 IngredientScroll.SetActive(false);
