@@ -18,7 +18,7 @@ public class RecipeObject : MonoBehaviour
     private string recordPanelName = "RecordPanel";
     private string favoritePanelName = "FavoritePanel";
 
-
+    public bool justEvtBtn = false;
     [SerializeField]
     private Transform record = null;
     [SerializeField]
@@ -29,9 +29,13 @@ public class RecipeObject : MonoBehaviour
 
         record = GameObject.Find("Canvas").transform.Find(recordPanelName);
         favor = GameObject.Find("Canvas").transform.Find(favoritePanelName);
-
         ImageBtnReset();
-        RecipeObjRefresh();
+        if (!justEvtBtn)
+        {
+            
+            RecipeObjRefresh();
+        }
+
 
         print(favor.Find("RecipeScrollView").Find("Viewport").Find("Content"));
     }
@@ -52,21 +56,39 @@ public class RecipeObject : MonoBehaviour
         if (isFavorite) isFavorite = false;
         else isFavorite = true;
         ImageBtnReset();
-        MoveObjForPanel();
+        if(!justEvtBtn) MoveObjForPanel();
+
     }
     private void ImageBtnReset()
     {
         // 즐겨찾기 버튼 이미지 새로고침
-        if (isFavorite)
+        if(!justEvtBtn)
         {
-            this.transform.GetChild(2).GetChild(1).gameObject.SetActive(true);
-            this.transform.GetChild(2).GetChild(0).gameObject.SetActive(false);
+            if (isFavorite)
+            {
+                this.transform.GetChild(2).GetChild(1).gameObject.SetActive(true);
+                this.transform.GetChild(2).GetChild(0).gameObject.SetActive(false);
+            }
+            else
+            {
+                this.transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
+                this.transform.GetChild(2).GetChild(1).gameObject.SetActive(false);
+            }
         }
         else
         {
-            this.transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
-            this.transform.GetChild(2).GetChild(1).gameObject.SetActive(false);
+            if (isFavorite)
+            {
+                this.transform.GetChild(1).gameObject.SetActive(true);
+                this.transform.GetChild(0).gameObject.SetActive(false);
+            }
+            else
+            {
+                this.transform.GetChild(0).gameObject.SetActive(true);
+                this.transform.GetChild(1).gameObject.SetActive(false);
+            }
         }
+        
     }
    
     
